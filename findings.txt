@@ -1,0 +1,1 @@
+A short (max 300 words ) text file describing the findings on what containers share with the host.
