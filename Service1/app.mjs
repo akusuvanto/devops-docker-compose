@@ -61,4 +61,15 @@ async function getAvailableDiskSpace() {
   return fsObject;
 }
 
-console.log(await getAvailableDiskSpace());
+async function getTimeSinceLastBoot() {
+
+  const { stdout, stderr } = await exec('cat /proc/uptime');
+  
+  const timeArray = stdout.trim().split(" ");
+
+  // First value of /proc/uptime is time since last boot in seconds
+  const timeObject = {"Time since Last Boot": {seconds:timeArray[0]}};
+  return timeObject;
+}
+
+console.log(await getTimeSinceLastBoot());
