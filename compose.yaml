@@ -1,0 +1,5 @@
+services:
+  service1:
+    build: ./service1
+    ports:
+      - 8199:8199
