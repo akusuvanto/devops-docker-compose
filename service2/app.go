@@ -19,6 +19,10 @@ type Filesystem struct {
 	Used       string
 }
 
+type Time struct {
+	seconds string
+}
+
 func getLocalIPAddresses() []string {
 	outBytes, err := exec.Command("bash", "-c", "hostname -I").Output()
 	if err != nil {
@@ -92,8 +96,22 @@ func getAvailableDiskSpace() []Filesystem {
 	return fsArray
 }
 
+func getTimeSinceLastBoot() Time {
+	outBytes, err := exec.Command("bash", "-c", "cat /proc/uptime").Output()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	out := string(outBytes)
+	outTrimmed := strings.TrimSuffix(out, "\n")
+	timeArray := strings.Split(outTrimmed, " ")
+
+	t := Time{timeArray[0]}
+	return t
+}
+
 func main() {
 	//fmt.Printf("%v", getLocalIPAddresses())
 	// getRunningProcesses()
-	fmt.Printf("%v", getAvailableDiskSpace())
+	fmt.Printf("%v", getTimeSinceLastBoot())
 }
