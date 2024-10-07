@@ -1,13 +1,15 @@
 import { promisify } from 'node:util';
 import child_process from 'node:child_process';
+import http from 'http';
+
+
 const exec = promisify(child_process.exec);
 
 async function getLocalIPAddresses() {
   const { stdout, stderr } = await exec('hostname -I');
   const addressArray = stdout.trim().split(" ");
 
-  const addressObject = {"IP Addresses": addressArray};
-  return addressObject;
+  return addressArray;
 }
 
 async function getRunningProcesses() {
@@ -27,8 +29,7 @@ async function getRunningProcesses() {
       ,"COMMAND": process.substring(process.indexOf(' ')+1)
     });};
 
-  const processObject = {"Running Processes": processArray}
-  return processObject;
+  return processArray;
 }
 
 async function getAvailableDiskSpace() {
@@ -57,8 +58,7 @@ async function getAvailableDiskSpace() {
     });
   };
   
-  const fsObject = {"Available Disk Space": fsArray}
-  return fsObject;
+  return fsArray;
 }
 
 async function getTimeSinceLastBoot() {
@@ -68,8 +68,26 @@ async function getTimeSinceLastBoot() {
   const timeArray = stdout.trim().split(" ");
 
   // First value of /proc/uptime is time since last boot in seconds
-  const timeObject = {"Time since Last Boot": {seconds:timeArray[0]}};
-  return timeObject;
+  return {"seconds": timeArray[0]}
 }
 
-console.log(await getTimeSinceLastBoot());
+http.createServer(async function (req, res) {
+
+  res.writeHead(200, {'Content-Type': 'application/json'});
+
+  const ip = await getLocalIPAddresses();
+  const processes = await getRunningProcesses();
+  const diskspace = await getAvailableDiskSpace();
+  const time = await getTimeSinceLastBoot();
+  
+  let response = {"Service1": {
+                  "IP Addresses": ip,
+                  "Running Processes": processes,
+                  "Available Disk Space": diskspace,
+                  "Time Since Last Boot": time
+                }
+              };
+
+	res.end(JSON.stringify(response));
+
+}).listen(8199);
