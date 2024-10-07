@@ -10,4 +10,26 @@ async function getLocalIPAddresses() {
   return addressObject;
 }
 
-console.log(await getLocalIPAddresses());
+async function getRunningProcesses() {
+
+  // Format ps -ax to return only PID and COMMAND
+  const { stdout, stderr } = await exec('ps --no-headers -ax -o pid,command');
+  
+  const processes = stdout.trim().split("\n");
+  var processArray = [];
+
+  for (process of processes){
+    process = process.trim()
+
+    // Split into array at first space
+    processArray.push(
+      {"PID":     process.substring(0, process.indexOf(' '))
+      ,"COMMAND": process.substring(process.indexOf(' ')+1)
+    });};
+
+  const processObject = {"Running Processes": processArray}
+
+  return processObject;
+}
+
+console.log(await getRunningProcesses());
