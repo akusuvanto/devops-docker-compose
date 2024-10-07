@@ -2,7 +2,6 @@ import { promisify } from 'node:util';
 import child_process from 'node:child_process';
 import http from 'http';
 
-
 const exec = promisify(child_process.exec);
 
 async function getLocalIPAddresses() {
@@ -71,7 +70,7 @@ async function getTimeSinceLastBoot() {
   return {"seconds": timeArray[0]}
 }
 
-http.createServer(async function (req, res) {
+const server = http.createServer(async function (req, res) {
 
   res.writeHead(200, {'Content-Type': 'application/json'});
 
@@ -90,4 +89,8 @@ http.createServer(async function (req, res) {
 
 	res.end(JSON.stringify(response));
 
-}).listen(8199);
+});
+
+server.listen(8199, () => {
+  console.log('Server ready!');
+});
