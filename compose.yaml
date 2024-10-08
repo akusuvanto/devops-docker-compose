@@ -1,5 +1,24 @@
+version: "3"
 services:
+
   service1:
     build: ./service1
     ports:
       - 8199:8199
+    networks:
+      - internal
+      - public
+
+  service2:
+    build: ./service2
+    ports:
+      - 8198:8198
+    networks:
+      - internal
+
+networks:
+  internal:
+    driver: bridge
+    internal: true
+  public:
+    driver: bridge
