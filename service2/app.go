@@ -1,8 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 	"os/exec"
 	"strings"
 )
@@ -20,7 +22,14 @@ type Filesystem struct {
 }
 
 type Time struct {
-	seconds string
+	Seconds string
+}
+
+type ServiceStatus struct {
+	IPAddresses       []string
+	ListOfServices    []Process
+	DiskSpace         []Filesystem
+	TimeSinceLastBoot Time
 }
 
 func getLocalIPAddresses() []string {
@@ -106,12 +115,27 @@ func getTimeSinceLastBoot() Time {
 	outTrimmed := strings.TrimSuffix(out, "\n")
 	timeArray := strings.Split(outTrimmed, " ")
 
-	t := Time{timeArray[0]}
+	timeSinceBoot := timeArray[0]
+	fmt.Println(timeSinceBoot)
+
+	t := Time{timeSinceBoot}
+	fmt.Println(t)
 	return t
 }
 
+func server(res http.ResponseWriter, req *http.Request) {
+
+	response := ServiceStatus{
+		getLocalIPAddresses(),
+		getRunningProcesses(),
+		getAvailableDiskSpace(),
+		getTimeSinceLastBoot()}
+
+	r, _ := json.Marshal(response)
+	res.Write(r)
+}
+
 func main() {
-	//fmt.Printf("%v", getLocalIPAddresses())
-	// getRunningProcesses()
-	fmt.Printf("%v", getTimeSinceLastBoot())
+	http.HandleFunc("/", server)
+	http.ListenAndServe(":8198", nil)
 }
