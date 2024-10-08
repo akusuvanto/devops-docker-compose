@@ -27,7 +27,7 @@ type Time struct {
 
 type ServiceStatus struct {
 	IPAddresses       []string
-	ListOfServices    []Process
+	RunningProcesses  []Process
 	DiskSpace         []Filesystem
 	TimeSinceLastBoot Time
 }

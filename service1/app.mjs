@@ -67,7 +67,7 @@ async function getTimeSinceLastBoot() {
   const timeArray = stdout.trim().split(" ");
 
   // First value of /proc/uptime is time since last boot in seconds
-  return {"seconds": timeArray[0]}
+  return {"Seconds": timeArray[0]}
 }
 
 const server = http.createServer(async function (req, res) {
@@ -80,10 +80,10 @@ const server = http.createServer(async function (req, res) {
   const time = await getTimeSinceLastBoot();
   
   let response = {"Service1": {
-                  "IP Addresses": ip,
-                  "Running Processes": processes,
-                  "Available Disk Space": diskspace,
-                  "Time Since Last Boot": time
+                  "IPAddresses": ip,
+                  "RunningProcesses": processes,
+                  "DiskSpace": diskspace,
+                  "TimeSinceLastBoot": time
                 }
               };
 
