@@ -102,9 +102,9 @@ const server = http.createServer(async function (req, res) {
 });
 
 server.listen(8199, () => {
-  console.log('Server ready!');
+  console.log('Service1 Ready!');
 });
 
-// Handle gracefull shutdown
+// Handle graceful shutdown
 process.on('SIGTERM', process.exit);
 process.on('SIGINT', process.exit);

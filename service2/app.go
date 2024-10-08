@@ -116,10 +116,8 @@ func getTimeSinceLastBoot() Time {
 	timeArray := strings.Split(outTrimmed, " ")
 
 	timeSinceBoot := timeArray[0]
-	fmt.Println(timeSinceBoot)
-
 	t := Time{timeSinceBoot}
-	fmt.Println(t)
+
 	return t
 }
 
@@ -137,5 +135,7 @@ func server(res http.ResponseWriter, req *http.Request) {
 
 func main() {
 	http.HandleFunc("/", server)
+
+	fmt.Println("Service2 Ready!")
 	http.ListenAndServe(":8198", nil)
 }
