@@ -3,15 +3,22 @@ tasks, containers can share some things with the host and also isolate on many
 aspects. 
 
 Containers can share the network stack if using the 'host' network mode, while 
-using a bridge provides some isolation. 
+using a bridge or other network providers provide isolation. Using an internal 
+network flag will also set that network to only be available to containers it 
+is assigned to.
 
-Containers isolate running processes from the host.
+Containers isolate running processes from the host as is evident by the sparse 
+list of processes returned by the program.
 
 Based on the results given by programs, containers can see the host's disk 
 and an overlay file system, however based on documentation, without a mount 
 or running in privileged mode, the container should not have access to files 
-on the host device. Containers also create multiple isolated tmpf filesystems 
+on the host device. Containers also create multiple isolated tmpfs filesystems 
 that are stored only in memory.
 
-The uptime reported by the container is the same as the host, since they share 
-the OS kernel.
+The uptime reported by the containers is the same as the host, since 
+containers share the kernel of the host OS. While doing research for this task 
+I found out this can cause problems if the software in the container expects 
+certain kernel features to exist. Newer kernels may (rarely) remove 
+functionality that was present when the container was built. However, the core 
+functionality seems to be indeed quite stable.
