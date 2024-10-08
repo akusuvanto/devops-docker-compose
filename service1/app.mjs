@@ -70,6 +70,14 @@ async function getTimeSinceLastBoot() {
   return {"Seconds": timeArray[0]}
 }
 
+async function getService2Status(url) {
+
+  return fetch(url)
+  .then((service2Response)=>service2Response.json())
+  .then((responseText)=>{return responseText});
+
+}
+
 const server = http.createServer(async function (req, res) {
 
   res.writeHead(200, {'Content-Type': 'application/json'});
@@ -79,12 +87,14 @@ const server = http.createServer(async function (req, res) {
   const diskspace = await getAvailableDiskSpace();
   const time = await getTimeSinceLastBoot();
   
+  const service2 = await getService2Status("http://service2:8198");
+
   let response = {"Service1": {
                   "IPAddresses": ip,
                   "RunningProcesses": processes,
                   "DiskSpace": diskspace,
                   "TimeSinceLastBoot": time
-                }
+                },"Service2": service2
               };
 
 	res.end(JSON.stringify(response));
@@ -94,3 +104,7 @@ const server = http.createServer(async function (req, res) {
 server.listen(8199, () => {
   console.log('Server ready!');
 });
+
+// Handle gracefull shutdown
+process.on('SIGTERM', process.exit);
+process.on('SIGINT', process.exit);
