@@ -1,1 +1,17 @@
-A short (max 300 words ) text file describing the findings on what containers share with the host.
+Based on the results of this exercise and other findings while completing the 
+tasks, containers can share some things with the host and also isolate on many 
+aspects. 
+
+Containers can share the network stack if using the 'host' network mode, while 
+using a bridge provides some isolation. 
+
+Containers isolate running processes from the host.
+
+Based on the results given by programs, containers can see the host's disk 
+and an overlay file system, however based on documentation, without a mount 
+or running in privileged mode, the container should not have access to files 
+on the host device. Containers also create multiple isolated tmpf filesystems 
+that are stored only in memory.
+
+The uptime reported by the container is the same as the host, since they share 
+the OS kernel.
