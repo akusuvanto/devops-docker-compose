@@ -1,25 +1,46 @@
-version: "3"
 services:
-
   service1:
-    container_name: service-1-nodejs
     build: ./service1
+    environment:
+      PORT: "9501"
+      SERVICE_2_URL: "http://service2:9502"
+    deploy:
+      replicas: 3
     ports:
-      - 8199:8199
+      - "9501:9501"
     networks:
       - internal
-      - public
+      - loadbalancing
+    depends_on:
+      - service2
 
   service2:
     container_name: service-2-golang
     build: ./service2
+    environment:
+      PORT: "9502"
     ports:
-      - 8198:8198
+    - "9502:9502"
     networks:
       - internal
 
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    ports:
+      - "8198:8198"
+    networks:
+      - loadbalancing
+      - public
+    depends_on:
+      - service1
+      - service2
+  
 networks:
   internal:
+    driver: bridge
+    internal: true
+  loadbalancing:
     driver: bridge
     internal: true
   public:
