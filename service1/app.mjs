@@ -87,7 +87,7 @@ const server = http.createServer(async function (req, res) {
   const diskspace = await getAvailableDiskSpace();
   const time = await getTimeSinceLastBoot();
   
-  const service2 = await getService2Status("http://service2:8198");
+  const service2 = await getService2Status(process.env.SERVICE_2_URL);
 
   let response = {"Service1": {
                   "IPAddresses": ip,
@@ -101,10 +101,16 @@ const server = http.createServer(async function (req, res) {
 
 });
 
-server.listen(8199, () => {
+server.listen(process.env.PORT, () => {
   console.log('Service1 Ready!');
 });
 
 // Handle graceful shutdown
-process.on('SIGTERM', process.exit);
-process.on('SIGINT', process.exit);
+process.on('SIGTERM', (code) => {
+  console.log(`Service 1 exiting with code: ${code}`);
+  process.exit();
+});
+process.on('SIGINT', (code) => {
+  console.log(`Service 1 exiting with code: ${code}`);
+  process.exit();
+});

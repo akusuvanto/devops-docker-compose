@@ -9,5 +9,4 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 8199
 CMD ["node", "app.mjs"]

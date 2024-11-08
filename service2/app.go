@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"os/exec"
 	"strings"
 )
@@ -134,8 +135,9 @@ func server(res http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/", server)
+	port := ":" + os.Getenv("PORT")
 
+	http.HandleFunc("/", server)
 	fmt.Println("Service2 Ready!")
-	http.ListenAndServe(":8198", nil)
+	http.ListenAndServe(port, nil)
 }
