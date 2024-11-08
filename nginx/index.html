@@ -18,8 +18,8 @@
         <p>Stopping will only stop container,not remove them or networks as this was not requested.</p>
 
         <form>
-            <button type="button" id="requestButton">REQUEST</button>
-            <button type="button" id="stopButton">STOP</button>
+            <button type="button" style="width:80px;height:32px;" id="requestButton">REQUEST</button>
+            <button type="button" style="width:80px;height:32px;" id="stopButton">STOP</button>
         </form>
 
         <textarea id="responseBox" rows="40" cols="80" style="background-color: #bbbbbb;">
@@ -56,6 +56,7 @@
 
             function stop(){
                 fetch("/api/stop")
+                responseBox.innerText = 'Stopping Containers!';
             }
 
         </script>
