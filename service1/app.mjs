@@ -78,7 +78,19 @@ async function getService2Status(url) {
 
 }
 
+// Tracks if allowed to respond to requests
+let sleepUntil = new Date().getTime();
+
 const server = http.createServer(async function (req, res) {
+
+  // Prevent responding to requests if they have been recently responded to.
+  // Node does not have a blocking sleep function and almost everything is async
+  // so this is probably the least horrible way the requirement can be met.
+  // The other option is to implement blocking sleep, but that has to be busy 
+  // waiting so it's very far from ideal.
+  if (new Date().getTime() < sleepUntil){
+    return;
+  }
 
   res.writeHead(200, {'Content-Type': 'application/json'});
 
@@ -98,6 +110,9 @@ const server = http.createServer(async function (req, res) {
               };
 
 	res.end(JSON.stringify(response));
+  
+  // Stop responding to requests for 2 seconds
+  sleepUntil = new Date().getTime() + 2000;
 
 });
 
