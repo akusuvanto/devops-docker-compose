@@ -1,9 +1,49 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="en">
+
     <head>
-        <title>Example</title>
+        <meta charset="UTF-8" />
+        <title>Docker Info</title>
     </head>
-    <body>
+
+    <body style="background-color:#909090;">
+
         <p>This is an example of a simple HTML page with one paragraph.</p>
+
+        <form>
+            <button type="button" id="requestButton">REQUEST</button>
+        </form>
+
+        <textarea id="responseBox" rows="40" cols="80" style="background-color: #bbbbbb;">
+        </textarea>
+
+        <script>
+            const requestButton = document.querySelector("#requestButton");
+            const responseBox = document.querySelector("#responseBox")
+
+            requestButton.addEventListener("click", updateData)
+
+            function updateData(){
+
+                fetch("/api/")
+                
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error: ${response.status}`);
+                    }
+
+                    return response.text();
+                })
+
+                .then((text) => {
+                    responseBox.innerText = text;
+                })
+
+                .catch((error) => {
+                    responseBox.innerText = `Could not fetch API: ${error}`;
+                })
+            }
+        </script>
     </body>
 </html>
