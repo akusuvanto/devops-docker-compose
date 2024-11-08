@@ -35,6 +35,7 @@ services:
     depends_on:
       - service1
       - service2
+    stop_grace_period: 2s
   
 networks:
   internal:
