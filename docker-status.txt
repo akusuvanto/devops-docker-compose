@@ -1,12 +1,16 @@
 $ docker container ls
-CONTAINER ID   IMAGE                            COMMAND                  CREATED         STATUS         PORTS                                       NAMES
-1c66019db067   devops-docker-compose-service1   "docker-entrypoint.s…"   3 seconds ago   Up 2 seconds   0.0.0.0:8199->8199/tcp, :::8199->8199/tcp   service-1-nodejs
-c4351b205914   devops-docker-compose-service2   "/go-status-server"      3 seconds ago   Up 2 seconds                                               service-2-golang
+CONTAINER ID   IMAGE                            COMMAND                  CREATED         STATUS         PORTS                                               NAMES
+049b696133a7   devops-docker-compose-nginx      "/docker-entrypoint.…"   3 seconds ago   Up 2 seconds   80/tcp, 0.0.0.0:8198->8198/tcp, :::8198->8198/tcp   nginx
+1c6107387b95   devops-docker-compose-service1   "docker-entrypoint.s…"   3 seconds ago   Up 2 seconds                                                       devops-docker-compose-service1-2
+05a043db0b14   devops-docker-compose-service1   "docker-entrypoint.s…"   3 seconds ago   Up 2 seconds                                                       devops-docker-compose-service1-1
+5f684b25dd9d   devops-docker-compose-service1   "docker-entrypoint.s…"   3 seconds ago   Up 2 seconds                                                       devops-docker-compose-service1-3
+e2f629ef3bb6   devops-docker-compose-service2   "/go-status-server"      3 seconds ago   Up 3 seconds                                                       service-2-golang
 
 $ docker network ls
-NETWORK ID     NAME                             DRIVER    SCOPE
-a6af65e86aa7   bridge                           bridge    local
-ef68e9c597e6   devops-docker-compose_internal   bridge    local
-3af737a27a7c   devops-docker-compose_public     bridge    local
-f2acf115c01f   host                             host      local
-1f83545446be   none                             null      local
+NETWORK ID     NAME                                  DRIVER    SCOPE
+42033986a453   bridge                                bridge    local
+ec0def72675a   devops-docker-compose_internal        bridge    local
+d5efd060dc1c   devops-docker-compose_loadbalancing   bridge    local
+dfd324276dcf   devops-docker-compose_public          bridge    local
+f2acf115c01f   host                                  host      local
+1f83545446be   none                                  null      local
