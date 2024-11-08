@@ -13,6 +13,10 @@ services:
       - loadbalancing
     depends_on:
       - service2
+    labels:
+      - com.akusuvanto=container
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
   service2:
     container_name: service-2-golang
@@ -23,6 +27,8 @@ services:
     - "9502:9502"
     networks:
       - internal
+    labels:
+      - com.akusuvanto=container
 
   nginx:
     build: ./nginx
@@ -35,6 +41,8 @@ services:
     depends_on:
       - service1
       - service2
+    labels:
+      - com.akusuvanto=container
     stop_grace_period: 2s
   
 networks:

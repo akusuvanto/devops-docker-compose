@@ -1,6 +1,7 @@
 import { promisify } from 'node:util';
 import child_process from 'node:child_process';
 import http from 'http';
+import { stopContainers } from './stopContainers.mjs';
 
 const exec = promisify(child_process.exec);
 
@@ -82,6 +83,10 @@ async function getService2Status(url) {
 let sleepUntil = new Date().getTime();
 
 const server = http.createServer(async function (req, res) {
+
+  if (req.url == "/api/stop") {
+    stopContainers();
+  }
 
   // Prevent responding to requests if they have been recently responded to.
   // Node does not have a blocking sleep function and almost everything is async

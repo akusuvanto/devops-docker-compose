@@ -9,10 +9,17 @@
 
     <body style="background-color:#909090;">
 
-        <p>This is an example of a simple HTML page with one paragraph.</p>
+        <p>Press "REQUEST" to request data from an instance of service1 
+        (and by internal connection service2) via a load balancing Nginx proxy</p>
+
+        <p>Press "STOP" to stop all containers belonging to this compose project 
+        and return to command shell from "docker compose up --build".</p>
+
+        <p>Stopping will only stop container,not remove them or networks as this was not requested.</p>
 
         <form>
             <button type="button" id="requestButton">REQUEST</button>
+            <button type="button" id="stopButton">STOP</button>
         </form>
 
         <textarea id="responseBox" rows="40" cols="80" style="background-color: #bbbbbb;">
@@ -20,13 +27,15 @@
 
         <script>
             const requestButton = document.querySelector("#requestButton");
+            const stopButton = document.querySelector("#stopButton");
             const responseBox = document.querySelector("#responseBox")
 
             requestButton.addEventListener("click", updateData)
+            stopButton.addEventListener("click", stop)
 
             function updateData(){
 
-                fetch("/api/")
+                fetch("/api/", { signal: AbortSignal.timeout(1000) })
                 
                 .then((response) => {
                     if (!response.ok) {
@@ -44,6 +53,11 @@
                     responseBox.innerText = `Could not fetch API: ${error}`;
                 })
             }
+
+            function stop(){
+                fetch("/api/stop")
+            }
+
         </script>
     </body>
 </html>
