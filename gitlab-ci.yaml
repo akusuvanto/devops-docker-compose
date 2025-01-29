@@ -1,0 +1,16 @@
+build-job:
+  stage: build
+  script:
+    - echo "Running build..."
+
+test-job:
+  stage: test
+  script:
+    - echo "Running tests..."
+    - sleep 5
+
+deploy-job:
+  stage: deploy
+  script:
+    - echo "Deploying build!"
+  environment: production
