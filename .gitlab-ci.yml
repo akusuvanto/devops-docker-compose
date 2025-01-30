@@ -1,16 +1,23 @@
 build-job:
   stage: build
+  tags:
+    - shell
   script:
     - echo "Running build..."
+    - docker-compose build
 
 test-job:
   stage: test
+  tags:
+    - shell
   script:
     - echo "Running tests..."
     - sleep 5
 
 deploy-job:
   stage: deploy
+  tags:
+    - shell
   script:
     - echo "Deploying build!"
-  environment: production
+    - docker-compose up -d
