@@ -4,7 +4,7 @@ build-job:
     - shell
   script:
     - echo "Running build..."
-    - docker-compose build
+    - docker compose build
 
 test-job:
   stage: test
@@ -20,4 +20,4 @@ deploy-job:
     - shell
   script:
     - echo "Deploying build!"
-    - docker-compose up -d
+    - docker compose up -d
