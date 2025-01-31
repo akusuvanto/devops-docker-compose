@@ -17,10 +17,11 @@ test-job:
     - cd tests/
     - npm install
     - node test.mjs
+  allow_failure: true
+  after_script:
     - echo "Cleaning up"
     - cd ..
     - docker compose down
-  allow_failure: true
     
 
 deploy-job:
