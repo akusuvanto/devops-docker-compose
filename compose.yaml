@@ -47,6 +47,9 @@ services:
     build: ./apigateway
     environment:
       PORT: "8197"
+      API_URL: "http://nginx/api/"
+      API_USER: "user"
+      API_PASSWORD: "123"
     ports:
       - "8197:8197"
     networks:

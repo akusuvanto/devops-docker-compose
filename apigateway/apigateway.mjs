@@ -15,6 +15,22 @@ function changeState(newState){
     return;
 }
 
+async function getServiceStatus(url) {
+
+    let username = process.env.API_USER.toString();
+    let password = process.env.API_PASSWORD.toString();
+
+    let headers = new Headers();
+    headers.set('Authorization', 'Basic ' + Buffer.from(username + ":" + password).toString('base64'));
+
+    return fetch(url, {method:'GET',
+        headers: headers,
+        //credentials: 'user:passwd'
+       })
+    .then((serviceResponse)=>serviceResponse.json())
+    .then((responseText)=>{return responseText});
+}
+
 // Set port by environment variable or default to 8000 for testing
 const port = process.env.PORT || 8000;
 const app = express();
@@ -23,6 +39,12 @@ app.use(express.json())
 app.get('/state', (req, res) => {
     res.set('Content-Type', 'text/plain')
     res.send(appState)
+})
+
+app.get('/request', async (req, res) => {
+    res.set('Content-Type', 'text/plain')
+    let systemStatus = await getServiceStatus(process.env.API_URL);
+    res.send(systemStatus)
 })
 
 app.get('/run-log', (req, res) => {
