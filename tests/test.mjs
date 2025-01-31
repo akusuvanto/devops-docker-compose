@@ -85,7 +85,7 @@ async function test(){
         }),
 
         // Try to set the state to PAUSED (should not be allowed)
-        axios.put('http://localhost:8197/state', "PAUSED")
+        axios.put('http://localhost:8197/state', "{\"status\":\"INIT\"}")
 
             .then(function (response) {
 
@@ -124,15 +124,15 @@ async function test(){
             })
             .catch(function (error) {
                 // Handle error (no response from API)
-                addTestResult("GET State Content type is text/plain", "fail");
-                addTestResult("GET State initial value is INIT", "fail");
+                addTestResult("GET Request Content type is text/plain", "fail");
+                addTestResult("GET Request status is 200", "fail");
         }),
 
         // Test if state changes have been logged
         // NOTE: conflics with the requirement to return 403 on state change,
         // this should be changed when auth is implemeneted
         axios.get('http://localhost:8197/run-log')
-
+            
             .then(function (response) {
 
                 if (response.headers['content-type'] == "text/plain; charset=utf-8"){
@@ -142,7 +142,7 @@ async function test(){
                     addTestResult("GET run-log Content type is text/plain", "fail");
                 }
 
-                if (response.data.toString.includes("INIT->PAUSED")){
+                if (response.data.toString().includes("INIT->PAUSED")){
                     addTestResult("GET run-log logged state change", "success");
                 }
                 else {
