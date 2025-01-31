@@ -19,7 +19,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   service2:
-    container_name: service-2-golang
     build: ./service2
     environment:
       PORT: "9502"
@@ -32,7 +31,6 @@ services:
 
   nginx:
     build: ./nginx
-    container_name: nginx
     ports:
       - "8198:8198"
     networks:
