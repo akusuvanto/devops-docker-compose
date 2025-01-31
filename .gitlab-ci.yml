@@ -12,7 +12,10 @@ test-job:
     - shell
   script:
     - echo "Running tests..."
-    - sleep 5
+    - cd tests/
+    - npm install
+    - node test.mjs
+    - cd ..
 
 deploy-job:
   stage: deploy
