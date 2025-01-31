@@ -62,8 +62,6 @@ async function test(){
         axios.get('http://localhost:8197/state')
 
             .then(function (response) {
-                
-                console.log(response.headers['content-type'])
 
                 if (response.headers['content-type'] == "text/plain; charset=utf-8"){
                     addTestResult("GET State Content type is text/plain", "success");
@@ -77,6 +75,50 @@ async function test(){
                 }
                 else {
                     addTestResult("GET State initial value is INIT", "fail");
+                }
+
+            })
+            .catch(function (error) {
+                // Handle error (no response from API)
+                addTestResult("GET State Content type is text/plain", "fail");
+                addTestResult("GET State initial value is INIT", "fail");
+        }),
+
+        // Try to set the state to PAUSED (should not be allowed)
+        axios.put('http://localhost:8197/state', "PAUSED")
+
+            .then(function (response) {
+
+                if (response.status == "403"){
+                    addTestResult("Trying to change state from INIT responds 403", "success");
+                }
+                else {
+                    addTestResult("Trying to change state from INIT responds 403", "fail");
+                }
+
+            })
+            .catch(function (error) {
+                // Handle error (no response from API)
+                addTestResult("Trying to change state from INIT responds 403", "fail");
+        }),
+
+        // Test if the application can send system status via HTTP API
+        axios.get('http://localhost:8197/request')
+
+            .then(function (response) {
+
+                if (response.headers['content-type'] == "text/plain; charset=utf-8"){
+                    addTestResult("GET Request Content type is text/plain", "success");
+                }
+                else {
+                    addTestResult("GET Request Content type is text/plain", "fail");
+                }
+
+                if (response.status == "200"){
+                    addTestResult("GET Request status is 200", "success");
+                }
+                else {
+                    addTestResult("GET Request status is 200", "fail");
                 }
 
             })
