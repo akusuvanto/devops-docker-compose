@@ -11,11 +11,16 @@ test-job:
   tags:
     - shell
   script:
+    - echo "Setting up application"
+    - docker compose up -d
     - echo "Running tests..."
     - cd tests/
     - npm install
     - node test.mjs
+    - echo "Cleaning up"
     - cd ..
+    - docker compose down
+    
 
 deploy-job:
   stage: deploy
