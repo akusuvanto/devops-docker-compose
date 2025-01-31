@@ -43,6 +43,21 @@ services:
       - com.akusuvanto=container
     stop_grace_period: 2s
   
+  apigateway:
+    build: ./apigateway
+    environment:
+      PORT: "8197"
+    ports:
+      - "8197:8197"
+    networks:
+      - internal
+      - public
+    depends_on:
+      - service1
+      - service2
+    labels:
+      - com.akusuvanto=container
+
 networks:
   internal:
     driver: bridge
