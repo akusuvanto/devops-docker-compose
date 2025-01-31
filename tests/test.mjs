@@ -30,6 +30,27 @@ function displayResults() {
     });
 }
 
+function checkTestResults() {
+
+    let failedTests = 0;
+
+    for (let result of testResults) {
+        if (result.status === "fail") {
+            failedTests++;
+        }
+    }
+
+    if (failedTests == 0) {
+        // Exit with code 0 if all tests pass
+        console.log("All tests passed.");
+        process.exit(0);  
+    }
+    // Exit with code 1 if any test has failed
+    console.log(failedTests.toString() + " Test case(s) failed.");
+    process.exit(1);  
+    
+}
+
 // **********
 // Test Block
 // **********
@@ -42,7 +63,9 @@ async function test(){
 
             .then(function (response) {
                 
-                if (response.headers['content-type'] == "text/plain"){
+                console.log(response.headers['content-type'])
+
+                if (response.headers['content-type'] == "text/plain; charset=utf-8"){
                     addTestResult("GET State Content type is text/plain", "success");
                 }
                 else {
@@ -66,6 +89,7 @@ async function test(){
 
     const done = await Promise.all(tests);
     displayResults();
+    checkTestResults();
 }
 
 test();
