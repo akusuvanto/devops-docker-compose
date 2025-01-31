@@ -20,7 +20,6 @@ test-job:
   allow_failure: true
   after_script:
     - echo "Cleaning up"
-    - cd ..
     - docker compose down
     
 
