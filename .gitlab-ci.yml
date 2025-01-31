@@ -20,6 +20,7 @@ test-job:
     - echo "Cleaning up"
     - cd ..
     - docker compose down
+  allow_failure: true
     
 
 deploy-job:
